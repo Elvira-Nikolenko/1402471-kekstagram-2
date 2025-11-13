@@ -1,32 +1,16 @@
-function checkStringLength(str, maxLength) {
-  return str.length <= maxLength;
-}
-checkStringLength('тест', 5);
-
-function isPalindrome(str) {
-  const normalizedStr = str.replaceAll(' ', '').toLowerCase();
-  let reversedStr = '';
-  for (let i = normalizedStr.length - 1; i >= 0; i--) {
-    reversedStr += normalizedStr[i];
-  }
-  return normalizedStr === reversedStr;
-}
-
-isPalindrome('тест');
-
-function extractDigits(input) {
-  const str = input.toString();
-  let result = '';
-  for (let i = 0; i < str.length; i++) {
-    const char = str[i];
-    if (!Number.isNaN(parseInt(char, 10))) {
-      result += char;
-    }
-  }
-  if (result === '') {
-    return NaN;
-  }
-  return parseInt(result, 10);
+function workTime(workStart, workEnd, meetingStart, meetingDuration) {
+  const parseTime = (timeStr) => {
+    const [hours, minutes = '0'] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+  const workStartMinutes = parseTime(workStart);
+  const workEndMinutes = parseTime(workEnd);
+  const meetingStartMinutes = parseTime(meetingStart);
+  const meetingEndMinutes = meetingStartMinutes + meetingDuration;
+  return (
+    meetingStartMinutes >= workStartMinutes &&
+    meetingEndMinutes <= workEndMinutes
+  );
 }
 
-extractDigits('кот');
+workTime('08:00', '18:00', '10:00', 90);

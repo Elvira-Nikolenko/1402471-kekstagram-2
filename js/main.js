@@ -1,3 +1,5 @@
+import './thumbnails';
+
 const MIN_COUNT_ID = 1;
 const MAX_COUNT_ID = 25;
 const MAX_LENGTH_IMAGES = 25;
@@ -71,7 +73,7 @@ function getCommentsList(maxLength) {
   return commentsList;
 }
 
-function getImageList(maxLength = MAX_LENGTH_IMAGES) {
+export function getImageList(maxLength = MAX_LENGTH_IMAGES) {
   const imagesList = [];
 
   for (let i = 0; i < maxLength; i++) {

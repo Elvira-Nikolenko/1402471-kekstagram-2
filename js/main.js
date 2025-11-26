@@ -2,7 +2,7 @@ import './thumbnails';
 
 const MIN_COUNT_ID = 1;
 const MAX_COUNT_ID = 25;
-const MAX_LENGTH_IMAGES = 25;
+export const MAX_LENGTH_IMAGES = 25;
 const MOCK_DESCRIPTION = 'Картинка';
 const MIN_COUNT_COMMENTS = 0;
 const MAX_COUNT_COMMENTS = 30;

@@ -1,12 +1,22 @@
-import {getImageList} from './main';
+import {getImageList, MAX_LENGTH_IMAGES} from './main';
+import {toggleVisibilityBigPictureModal} from './big-picture';
 
 const miniature = document.querySelector('#picture').content;
+
+
+const handleClickMiniature = (evt, dataUser) => {
+  evt.preventDefault();
+  toggleVisibilityBigPictureModal(dataUser);
+};
 
 const renderMiniature = (dataUser) => {
   const newMiniature = miniature.cloneNode(true);
   const imagePath = newMiniature.querySelector('.picture__img');
   const likes = newMiniature.querySelector('.picture__likes');
   const comments = newMiniature.querySelector('.picture__comments');
+  const containerNewMiniature = newMiniature.querySelector('.picture');
+
+  containerNewMiniature.addEventListener('click', (evt) => handleClickMiniature(evt, dataUser));
 
   imagePath.src = dataUser.url;
   likes.textContent = dataUser.likes;
@@ -16,7 +26,7 @@ const renderMiniature = (dataUser) => {
 };
 
 const fragment = document.createDocumentFragment();
-const imageList = getImageList();
+const imageList = getImageList(MAX_LENGTH_IMAGES);
 
 const renderListMiniature = (list) => {
   list.forEach((image) => {

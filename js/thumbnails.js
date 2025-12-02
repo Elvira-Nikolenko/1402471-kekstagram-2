@@ -1,4 +1,4 @@
-import {getImageList} from './main';
+import {getImageList} from './generate-mock-data';
 import {toggleVisibilityBigPictureModal} from './big-picture';
 
 const miniature = document.querySelector('#picture').content;

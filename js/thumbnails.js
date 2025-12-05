@@ -1,8 +1,9 @@
-import {getImageList} from './generate-mock-data';
-import {toggleVisibilityBigPictureModal} from './big-picture';
+import { getData } from './api.js';
+import { toggleVisibilityBigPictureModal } from './big-picture.js';
+import { showDataErrorMessage } from './utils.js';
 
 const miniature = document.querySelector('#picture').content;
-
+const pictureContainer = document.querySelector('.pictures');
 
 const handleClickMiniature = (evt, dataUser) => {
   evt.preventDefault();
@@ -15,28 +16,24 @@ const renderMiniature = (dataUser) => {
   const likes = newMiniature.querySelector('.picture__likes');
   const comments = newMiniature.querySelector('.picture__comments');
   const containerNewMiniature = newMiniature.querySelector('.picture');
-
   containerNewMiniature.addEventListener('click', (evt) => handleClickMiniature(evt, dataUser));
-
   imagePath.src = dataUser.url;
   likes.textContent = dataUser.likes;
   comments.textContent = dataUser.comments.length;
-
   return newMiniature;
 };
 
-const fragment = document.createDocumentFragment();
-const imageList = getImageList();
-
 const renderListMiniature = (list) => {
+  const fragment = document.createDocumentFragment();
   list.forEach((image) => {
     fragment.appendChild(renderMiniature(image));
   });
-
-  const pictureContainer = document.querySelector('.pictures');
-  if (pictureContainer) {
-    pictureContainer.appendChild(fragment);
-  }
+  pictureContainer.appendChild(fragment);
 };
 
-renderListMiniature(imageList);
+try {
+  const data = await getData();
+  renderListMiniature(data);
+} catch (error) {
+  showDataErrorMessage(error);
+}

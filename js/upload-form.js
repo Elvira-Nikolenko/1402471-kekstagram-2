@@ -1,10 +1,28 @@
 import { resetScale } from './scale.js';
 import { resetEffect } from './effects.js';
+import { sendData } from './api.js';
+import { showUploadSuccessMessage, showUploadErrorMessage } from './utils.js';
+import { initValidation } from './validation.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancel = document.querySelector('#upload-cancel');
 const uploadFile = document.querySelector('#upload-file');
+const submitButton = uploadForm.querySelector('.img-upload__submit');
+const hashtagsInput = uploadForm.querySelector('.text__hashtags');
+const commentInput = uploadForm.querySelector('.text__description');
+
+const pristine = initValidation(uploadForm, hashtagsInput, commentInput);
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
 
 export const openForm = () => {
   uploadOverlay.classList.remove('hidden');
@@ -19,6 +37,9 @@ const closeForm = () => {
   document.removeEventListener('keydown', handleKeydownEsc);
   uploadCancel.removeEventListener('click', handleClickCancel);
   uploadForm.reset();
+  pristine.reset();
+  resetScale();
+  resetEffect();
 };
 
 function handleKeydownEsc(evt) {
@@ -30,8 +51,6 @@ function handleKeydownEsc(evt) {
 
 export function handleClickCancel() {
   closeForm();
-  resetScale();
-  resetEffect();
 }
 
 export const handleChangeFile = () => {
@@ -39,3 +58,24 @@ export const handleChangeFile = () => {
 };
 
 uploadFile.addEventListener('change', handleChangeFile);
+
+const handleSubmit = async (evt) => {
+  try {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (!isValid) {
+      return;
+    }
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
+    await sendData(formData);
+    unblockSubmitButton();
+    closeForm();
+    showUploadSuccessMessage();
+  } catch {
+    unblockSubmitButton();
+    showUploadErrorMessage();
+  }
+};
+
+uploadForm.addEventListener('submit', handleSubmit);

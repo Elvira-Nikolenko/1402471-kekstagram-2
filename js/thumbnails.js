@@ -1,4 +1,4 @@
-import {getImageList, MAX_LENGTH_IMAGES} from './main';
+import {getImageList} from './generate-mock-data';
 import {toggleVisibilityBigPictureModal} from './big-picture';
 
 const miniature = document.querySelector('#picture').content;
@@ -26,7 +26,7 @@ const renderMiniature = (dataUser) => {
 };
 
 const fragment = document.createDocumentFragment();
-const imageList = getImageList(MAX_LENGTH_IMAGES);
+const imageList = getImageList();
 
 const renderListMiniature = (list) => {
   list.forEach((image) => {

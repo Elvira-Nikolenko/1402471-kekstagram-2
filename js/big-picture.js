@@ -1,5 +1,3 @@
-import { BODY } from './constants';
-
 const COMMENTS_BATCH_SIZE = 5;
 
 const bigPictureModal = document.querySelector('.big-picture');
@@ -13,6 +11,7 @@ const commentTemplate = bigPictureModal.querySelector('.social__comment').cloneN
 const closeBtn = bigPictureModal.querySelector('.big-picture__cancel');
 const socialCaption = bigPictureModal.querySelector('.social__caption');
 const commentsLoaderBtn = bigPictureModal.querySelector('.comments-loader');
+const body = document.querySelector('body');
 
 const state = {
   quantityComment: COMMENTS_BATCH_SIZE,
@@ -50,6 +49,12 @@ const updateCommentsList = () => {
   state.visibilityComments += newComments.length;
   state.endIndexCurrenCommentList += newComments.length;
   showCommentCount.textContent = state.visibilityComments;
+
+  if (state.visibilityComments === state.commentsList.length) {
+    commentsLoaderBtn.classList.add('hidden');
+  } else {
+    commentsLoaderBtn.classList.remove('hidden');
+  }
 };
 
 const handleClickCommentLoaderBtn = (evt) => {
@@ -89,7 +94,7 @@ const resetBigPictureData = () => {
 
 export function toggleVisibilityBigPictureModal(dataUser) {
   bigPictureModal.classList.toggle('hidden');
-  BODY.classList.toggle('modal-open');
+  body.classList.toggle('modal-open');
 
   if (dataUser) {
     updateBigPictureData(dataUser);
